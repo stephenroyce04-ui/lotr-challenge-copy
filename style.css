@@ -1,0 +1,367 @@
+/* ======================================================
+   GLOBAL LAYOUT
+====================================================== */
+
+body {
+  background-color: #444;
+  color: white;
+}
+h1 {
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+#top-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+/* Left side: heading stays left */
+#top-controls h1 {
+  margin: 0px;
+  flex: 1; /* takes up left space */
+}
+
+/* Middle: buttons centered */
+.middle-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex: 1; /* takes up middle space */
+  margin-top: 10px;
+}
+
+/* Right side: empty spacer to balance the layout */
+.spacer {
+  flex: 1;
+}
+
+#container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  padding: 20px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+#container > div:first-child,
+#activity-panel,
+#totals-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#totals-panel {
+  font-size: 15px;
+}
+
+/* ======================================================
+   MAP CONTAINER
+====================================================== */
+
+/* #map-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 1200 / 800;
+  overflow: hidden;
+  margin-top: 20px;
+  margin-left: 40px;
+} */
+#map-container {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 1200 / 800;
+  overflow: hidden;
+  margin: 20px auto; /* centers it, removes left-shift */
+  flex-shrink: 0;
+}
+/* newly added below */
+#map-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* or contain depending on your setup */
+  display: block;
+}
+/* Map image + SVG route */
+#map-bg,
+#route-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+#map-bg {
+  filter: brightness(1.3) contrast(0.5);
+}
+
+/* ======================================================
+   RESPONSIVE MARKERS
+====================================================== */
+
+/* Player emoji marker */
+.emoji-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: clamp(16px, 2.5vw, 32px); /* responsive scaling */
+  pointer-events: none;
+  z-index: 2000;
+  text-shadow: 0 0 4px #000, 0 0 8px #000, 0 0 12px #000;
+}
+
+/* Stage markers (Shire, Rivendell, etc.) */
+.stage-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: clamp(10px, 1.4vw, 14px); /* responsive scaling */
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 1500;
+  text-shadow: 0 0 3px #000;
+}
+
+/* ======================================================
+   MOBILE BREAKPOINT
+====================================================== */
+
+@media (max-width: 700px) {
+  #container {
+    flex-direction: column;
+  }
+
+  #map-container {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  #container > div:first-child,
+  #activity-panel,
+  #totals-panel {
+    width: 100%;
+  }
+}
+
+/* ======================================================
+   MODALS
+====================================================== */
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(64, 64, 64, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 20px;
+  width: 320px;
+  max-width: 90vw;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"] {
+  width: 100%;
+  padding: 5px;
+  margin-top: 4px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 20px;
+  color: black;
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-buttons button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.modal-buttons button:first-child {
+  background: #4caf50;
+  color: white;
+}
+
+.modal-buttons button:last-child {
+  background: #ccc;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ======================================================
+   BUTTONS + PANELS
+====================================================== */
+
+#add-player-button,
+#reset-challenge-button,
+#activity-submit {
+  padding: 10px 16px;
+  margin: 10px 5px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#add-player-button {
+  background: #2196f3;
+  color: white;
+}
+
+#reset-challenge-button {
+  background: #ff9800;
+  color: white;
+}
+
+#activity-submit {
+  background: #7f0386ff;
+  color: white;
+  border: 1px solid white;
+}
+
+#totals-panel {
+  margin-top: 15px;
+  padding: 10px;
+  padding-top: 0;
+  padding-bottom: 0;
+  background: #fafafa;
+  border-radius: 8px;
+  max-width: 400px;
+  color: #333;
+}
+
+#totals-panel > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+#totals-panel div:last-child {
+  border-bottom: none;
+}
+
+.player-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.player-controls button {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.player-controls .edit-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.player-controls .delete-btn {
+  background: #f44336;
+  color: white;
+}
+#totals-panel > div span {
+  margin-right: 12px;
+}
+
+/* ======================================================
+   UTILITY
+====================================================== */
+
+.hidden {
+  display: none !important;
+}
+.center {
+  text-align: center;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.emoji-grid div {
+  font-size: 32px;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  background: #222;
+  transition: 0.2s;
+}
+
+.emoji-grid div:hover {
+  background: #444;
+  pointer-events: auto;
+}
+
+.emoji-grid div.selected {
+  background: #666;
+  outline: 3px solid gold;
+}
+
+.emoji-marker {
+  font-size: clamp(12px, 1.8vw, 24px);
+}

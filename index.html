@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fantasy Theme Challenge</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!-- <h1>Fantasy League Challenge</h1> -->
+    <div id="top-controls">
+      <h1>Fantasy League Challenge</h1>
+
+      <div class="middle-buttons">
+        <button id="add-player-button">Add Player</button>
+        <button id="reset-challenge-button">Reset Challenge</button>
+      </div>
+
+      <div class="spacer"></div>
+    </div>
+
+    <div id="container">
+      <div>
+        <select id="participant-select">
+          <option value="">Select participant</option>
+        </select>
+
+        <!-- Activity Logging Panel -->
+        <div id="activity-panel">
+          <h3>Log Activity</h3>
+
+          <label>Participant:</label>
+          <select id="activity-participant-select"></select>
+
+          <label>Type:</label>
+          <select id="activity-type">
+            <option value="walking">Walking</option>
+            <option value="cycling">Cycling</option>
+            <option value="swimming">Swimming</option>
+          </select>
+
+          <label>Miles:</label>
+          <input type="number" id="activity-miles" min="0" step="0.1" />
+
+          <button id="activity-submit">Add Activity</button>
+        </div>
+
+        <!-- Totals Panel -->
+        <div id="totals-panel"></div>
+      </div>
+
+      <!-- Container Below -->
+      <div id="map-container">
+        <!-- Background Map -->
+        <img src="images/map.png" id="map-bg" alt="Fantasy Map" />
+
+        <!-- Inline SVG Route -->
+        <svg id="route-svg" viewBox="0 0 1200 800" fill="none">
+          <path
+            id="route-path"
+            d="M351 29C357.579 69.6928 267.583 57.5 243.5 81.5C232.142 92.8194 216.427 124.833 222.5 142C228.573 159.167 248.933 173.098 254.5 182C260.067 190.902 257.945 191.598 262.5 200.5C266.144 207.621 262.758 228.843 269 240.5C271.868 244.951 281.55 254.801 290.862 266.5C300.174 278.199 304.295 279.804 307.5 281.5C351 293 340.963 289.432 351 316C359.5 338.5 298.951 351.148 303 364.5C303 415.366 360 392.5 371 390C378 388.409 399.667 376 399.667 406.963C399.667 413.576 406.246 441.854 406.246 448L399.667 471.817C399.667 471.817 399.667 474.488 399.667 485.17C399.667 498.522 401.185 502.973 406.246 509.331C437.42 539.851 418 548.5 444.5 558L463 572L527 562.104L539.5 541.122C543.211 537.519 557.171 537.119 565.658 541.122C576 546 594.433 558.713 600 562.104L637 572L652 584H673L709 572L731 537.5L746.325 509.331L765.556 471.817L795.5 430C805 417.772 828.998 417.772 837.5 417.772C848.127 417.772 868.282 420.728 886.5 422C904.719 423.272 891.662 417.772 926.5 417.772C953 417.772 940.5 422 972.5 426.5C1000.26 430.404 1026.12 402.027 1030 398"
+            stroke="#FF0505"
+            stroke-width="5"
+          />
+        </svg>
+
+        <!-- Progress Marker (JS will move this) -->
+        <div id="progress-marker"></div>
+      </div>
+    </div>
+    <!-- Add Player Button -->
+    <!-- <button id="add-player-button">Add Player</button>
+    <button id="reset-challenge-button">Reset Challenge</button> -->
+
+    <!-- Totals Panel -->
+    <div id="totals-panel"></div>
+
+    <!-- Add Player Modal -->
+    <div id="add-player-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Add New Player</h3>
+        <label>Name:</label>
+        <input type="text" id="new-player-name" />
+
+        <!-- <label>Starting Miles:</label>
+        <input type="number" id="new-player-miles" value="0" min="0" /> -->
+
+        <label>Choose emoji:</label>
+        <div id="emoji-picker" class="emoji-grid">
+          <div>🔵</div>
+          <div>🟡</div>
+          <div>🔴</div>
+          <div>🟢</div>
+          <div>🟣</div>
+          <div>🟠</div>
+
+          <div>🐉</div>
+          <div>🧙‍♂️</div>
+          <div>🧝‍♀️</div>
+          <div>🐺</div>
+          <div>🦅</div>
+          <div>🐎</div>
+
+          <div>🌲</div>
+          <div>🏔️</div>
+          <div>🔥</div>
+          <div>⭐</div>
+          <div>✨</div>
+          <div>🌟</div>
+        </div>
+
+        <div class="modal-buttons">
+          <button id="confirm-add-player">Add</button>
+          <button id="cancel-add-player">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Score Modal -->
+    <div id="edit-score-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Edit Score</h3>
+        <p id="edit-player-name"></p>
+        <label>New Miles:</label>
+        <input type="number" id="edit-player-miles" min="0" />
+        <div class="modal-buttons">
+          <button id="confirm-edit-score">Save</button>
+          <button id="cancel-edit-score">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Player Modal -->
+    <div id="delete-player-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Delete Player</h3>
+        <p id="delete-player-name"></p>
+        <p>Are you sure you want to remove this player?</p>
+        <div class="modal-buttons">
+          <button id="confirm-delete-player">Delete</button>
+          <button id="cancel-delete-player">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset Challenge Modal -->
+    <div id="reset-challenge-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>Reset Challenge</h3>
+        <p>This will reset all players to 0 miles. Continue?</p>
+        <div class="modal-buttons">
+          <button id="confirm-reset-challenge">Reset</button>
+          <button id="cancel-reset-challenge">Cancel</button>
+        </div>
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
