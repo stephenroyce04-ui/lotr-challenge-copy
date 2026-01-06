@@ -5,6 +5,7 @@
 body {
   background-color: #444;
   color: white;
+  font-size: 18px;
 }
 h1 {
   margin-top: 15px;
@@ -323,7 +324,13 @@ h1 {
 #totals-panel > div span {
   margin-right: 12px;
 }
-
+#activity-type,
+#activity-miles,
+#participant-select,
+#activity-participant-select {
+  padding: 8px;
+  font-size: 16px;
+}
 /* ======================================================
    UTILITY
 ====================================================== */
