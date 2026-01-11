@@ -139,17 +139,17 @@ function renderAllParticipantMarkers() {
    UI UPDATES
 ========================= */
 
-function updateDropdown() {
-  const select = document.getElementById("participant-select");
-  select.innerHTML = `<option value="">Select participant</option>`;
+// function updateDropdown() {
+//   const select = document.getElementById("participant-select");
+//   select.innerHTML = `<option value="">Select participant</option>`;
 
-  participants.forEach((p) => {
-    const opt = document.createElement("option");
-    opt.value = p.id;
-    opt.textContent = `${p.name} (${p.progress} miles)`;
-    select.appendChild(opt);
-  });
-}
+//   participants.forEach((p) => {
+//     const opt = document.createElement("option");
+//     opt.value = p.id;
+//     opt.textContent = `${p.name} (${p.progress} miles)`;
+//     select.appendChild(opt);
+//   });
+// }
 
 function updateActivityDropdown() {
   const select = document.getElementById("activity-participant-select");
@@ -216,41 +216,51 @@ function openAddPlayerModal() {
     };
   });
 
-  document.getElementById("confirm-add-player").onclick = () => {
-    const name = document.getElementById("new-player-name").value.trim();
-    const selected = document.querySelector("#emoji-picker .selected");
-
-    if (!name || !selected) {
-      alert("Please enter a name and choose an emoji.");
-      return;
+  // 🔥 Focus the input once the modal is rendered
+  requestAnimationFrame(() => {
+    const input = document.getElementById("new-player-name");
+    if (input) {
+      input.focus();
+      input.select();
     }
-
-    participants.push({
-      id: crypto.randomUUID(),
-      name,
-      emoji: selected.dataset.emoji,
-      progress: 0, // always start at zero
-    });
-
-    saveParticipants();
-    closeModal(addPlayerModal);
-
-    // Clear inputs
-    document.getElementById("new-player-name").value = "";
-    document
-      .querySelectorAll("#emoji-picker div")
-      .forEach((d) => d.classList.remove("selected"));
-
-    updateDropdown();
-    updateActivityDropdown();
-    updateTotalsPanel();
-    renderAllParticipantMarkers();
-    renderStageMarkers();
-  };
-
-  document.getElementById("cancel-add-player").onclick = () =>
-    closeModal(addPlayerModal);
+  });
 }
+
+document.getElementById("confirm-add-player").onclick = () => {
+  const name = document.getElementById("new-player-name").value.trim();
+  const selected = document.querySelector("#emoji-picker .selected");
+
+  if (!name || !selected) {
+    alert("Please enter a name and choose an emoji.");
+    return;
+  }
+
+  participants.push({
+    id: crypto.randomUUID(),
+    name,
+    emoji: selected.dataset.emoji,
+    progress: 0, // always start at zero
+  });
+
+  saveParticipants();
+  closeModal(addPlayerModal);
+
+  // Clear inputs
+  document.getElementById("new-player-name").value = "";
+  document
+    .querySelectorAll("#emoji-picker div")
+    .forEach((d) => d.classList.remove("selected"));
+
+  // updateDropdown();
+  updateActivityDropdown();
+  updateTotalsPanel();
+  renderAllParticipantMarkers();
+  renderStageMarkers();
+};
+
+document.getElementById("cancel-add-player").onclick = () =>
+  closeModal(addPlayerModal);
+
 // =========================
 // EDIT PLAYER
 // =========================
@@ -309,7 +319,7 @@ document.getElementById("confirm-delete-player").onclick = () => {
   participants = participants.filter((p) => p.id !== selectedParticipantId);
 
   saveParticipants();
-  updateDropdown();
+  // updateDropdown();
   updateActivityDropdown();
   updateTotalsPanel();
   renderAllParticipantMarkers();
@@ -377,7 +387,7 @@ document.getElementById("confirm-reset-challenge").onclick = () => {
    INITIAL LOAD
 ========================= */
 
-updateDropdown();
+// updateDropdown();
 updateActivityDropdown();
 updateTotalsPanel();
 renderAllParticipantMarkers();
