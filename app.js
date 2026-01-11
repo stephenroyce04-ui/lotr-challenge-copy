@@ -139,18 +139,6 @@ function renderAllParticipantMarkers() {
    UI UPDATES
 ========================= */
 
-// function updateDropdown() {
-//   const select = document.getElementById("participant-select");
-//   select.innerHTML = `<option value="">Select participant</option>`;
-
-//   participants.forEach((p) => {
-//     const opt = document.createElement("option");
-//     opt.value = p.id;
-//     opt.textContent = `${p.name} (${p.progress} miles)`;
-//     select.appendChild(opt);
-//   });
-// }
-
 function updateActivityDropdown() {
   const select = document.getElementById("activity-participant-select");
   select.innerHTML = "";
