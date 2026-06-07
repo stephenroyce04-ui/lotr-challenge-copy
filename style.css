@@ -1,369 +1,589 @@
-/* ======================================================
-   GLOBAL LAYOUT
-====================================================== */
-
-body {
-  background-color: #444;
-  color: white;
-  font-size: 18px;
-  font-family: "Josefin Sans", sans-serif;
-}
-h1 {
-  margin-top: 15px;
-  margin-bottom: 0px;
-  /* color: #b5a8ff; */
-}
-
-#top-controls {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
+:root {
+  color-scheme: light;
+  --bg: #eef1e8;
+  --ink: #1d241d;
+  --muted: #667061;
+  --panel: #fffdf6;
+  --panel-strong: #f7f0df;
+  --line: #d9d2be;
+  --primary: #2f6548;
+  --primary-strong: #234d37;
+  --secondary: #8d6234;
+  --danger: #9c3f32;
+  --focus: #d59f2c;
+  --shadow: 0 18px 50px rgba(29, 36, 29, 0.16);
 }
 
-/* Left side: heading stays left */
-#top-controls h1 {
-  margin: 0px;
-  flex: 1; /* takes up left space */
-}
-
-/* Middle: buttons centered */
-.middle-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex: 1; /* takes up middle space */
-  margin-top: 10px;
-}
-
-/* Right side: empty spacer to balance the layout */
-.spacer {
-  flex: 1;
-}
-
-#container {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  padding: 20px;
-  flex-wrap: wrap;
+* {
   box-sizing: border-box;
 }
 
-#container > div:first-child,
-#activity-panel,
-#totals-panel {
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    linear-gradient(180deg, rgba(247, 240, 223, 0.7), rgba(238, 241, 232, 0.95)),
+    #eef1e8;
+  color: var(--ink);
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  font-size: 16px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.app-shell {
+  width: min(1480px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-header {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 24px;
+  background: #273629;
+  color: #fff8e9;
+  border-bottom: 5px solid #c59444;
+  box-shadow: var(--shadow);
 }
 
-#totals-panel {
-  font-size: 22px;
+.app-header h1,
+.section-heading h2,
+.map-heading h2,
+.modal-content h2 {
+  margin: 0;
+  line-height: 1.05;
 }
 
-/* ======================================================
-   MAP CONTAINER
-====================================================== */
+.app-header h1 {
+  font-size: clamp(2rem, 4vw, 4.8rem);
+  font-weight: 800;
+}
 
-#map-container {
+.eyebrow {
+  margin: 0 0 6px;
+  color: #c59444;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.app-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  padding-top: 22px;
+}
+
+.control-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.panel,
+.map-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(29, 36, 29, 0.1);
+}
+
+.panel {
+  padding: 18px;
+}
+
+.section-heading {
+  display: grid;
+  gap: 2px;
+  margin-bottom: 16px;
+}
+
+.section-heading h2,
+.map-heading h2 {
+  font-size: 1.45rem;
+}
+
+#activity-form {
+  display: grid;
+  gap: 10px;
+}
+
+label,
+.field-label {
+  margin: 0;
+  color: #3e493c;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: #fffefa;
+  border: 1px solid #bbb29b;
+  border-radius: 6px;
+}
+
+input:disabled,
+select:disabled {
+  color: #7c827a;
+  background: #e9e5d8;
+  cursor: not-allowed;
+}
+
+.button {
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 800;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button-primary {
+  color: #fff;
+  background: var(--primary);
+  box-shadow: 0 8px 18px rgba(47, 101, 72, 0.24);
+}
+
+.button-primary:hover {
+  background: var(--primary-strong);
+}
+
+.button-secondary {
+  color: #fff;
+  background: var(--secondary);
+}
+
+.button-danger {
+  color: #fff;
+  background: var(--danger);
+}
+
+.button-quiet {
+  color: #283128;
+  background: #e2dccb;
+}
+
+.form-message {
+  min-height: 20px;
+  color: var(--danger);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.form-message:empty {
+  display: none;
+}
+
+.form-message[data-type="success"] {
+  color: var(--primary);
+}
+
+.leaderboard-list {
+  display: grid;
+  gap: 10px;
+}
+
+.empty-state {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  background: #fbf7ea;
+  border: 1px solid #e4dcc8;
+  border-radius: 8px;
+}
+
+.player-marker {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  background: #273629;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.18);
+}
+
+.player-details {
+  min-width: 0;
+}
+
+.player-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.player-line strong,
+.player-line span,
+.player-details p {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.player-line strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-line span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-weight: 750;
+}
+
+.player-details p {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.progress-track {
+  height: 8px;
+  margin-top: 8px;
+  overflow: hidden;
+  background: #e4dcc8;
+  border-radius: 999px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #c59444);
+  border-radius: inherit;
+}
+
+.player-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.icon-button {
+  min-height: 34px;
+  padding: 7px 9px;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.edit-btn {
+  background: var(--primary);
+}
+
+.delete-btn {
+  background: var(--danger);
+}
+
+.map-panel {
+  overflow: hidden;
+}
+
+.map-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+  padding: 18px 18px 14px;
+  background: var(--panel-strong);
+  border-bottom: 1px solid var(--line);
+}
+
+.route-summary {
+  margin: 0;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 800;
+}
+
+.map-container {
   position: relative;
   width: 100%;
-  max-width: 1200px;
   aspect-ratio: 1200 / 800;
   overflow: hidden;
-  margin: 20px auto; /* centers it, removes left-shift */
-  flex-shrink: 0;
+  background: #273629;
 }
-/* newly added below */
-#map-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* or contain depending on your setup */
-  display: block;
-  border-radius: 15px;
-}
-/* Map image + SVG route */
+
 #map-bg,
 #route-svg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
   display: block;
 }
 
 #map-bg {
-  filter: brightness(0.6) contrast(0.5);
+  object-fit: cover;
+  filter: saturate(0.85) contrast(0.92) brightness(0.82);
 }
 
-/* ======================================================
-   RESPONSIVE MARKERS
-====================================================== */
-
-/* Player emoji marker */
-.emoji-marker {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  font-size: clamp(16px, 2.5vw, 32px); /* responsive scaling */
+#route-svg {
   pointer-events: none;
-  z-index: 2000;
-  text-shadow: 0 0 4px #000, 0 0 8px #000, 0 0 12px #000;
 }
 
-/* Stage markers (Shire, Rivendell, etc.) */
+#route-path {
+  stroke: #fff6d9;
+  stroke-width: 5;
+  stroke-dasharray: 7 7;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.65));
+}
+
 .stage-marker {
   position: absolute;
-  transform: translate(-50%, -50%);
-  background: rgba(95, 95, 95, 0.75);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: clamp(10px, 1.4vw, 14px); /* responsive scaling */
-  font-weight: bold;
+  z-index: 4;
+  display: grid;
+  gap: 1px;
+  min-width: 64px;
+  max-width: 128px;
+  padding: 5px 7px;
+  color: #fff8e9;
+  background: rgba(39, 54, 41, 0.88);
+  border: 1px solid rgba(255, 248, 233, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
   pointer-events: none;
-  z-index: 1500;
-  text-shadow: 0 0 3px #000;
+  text-align: center;
+  transform: translate(-50%, var(--stage-offset, -105%));
 }
 
-/* ======================================================
-   MOBILE BREAKPOINT
-====================================================== */
-
-@media (max-width: 700px) {
-  #container {
-    flex-direction: column;
-  }
-
-  #map-container {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  #container > div:first-child,
-  #activity-panel,
-  #totals-panel {
-    width: 100%;
-  }
+.stage-label,
+.stage-miles {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* ======================================================
-   MODALS
-====================================================== */
+.stage-label {
+  font-size: clamp(0.56rem, 1.1vw, 0.82rem);
+  font-weight: 850;
+}
+
+.stage-miles {
+  color: #dcc697;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(0.5rem, 0.9vw, 0.68rem);
+  font-weight: 800;
+}
+
+.emoji-marker {
+  position: absolute;
+  z-index: 6;
+  display: grid;
+  width: clamp(28px, 3.2vw, 42px);
+  height: clamp(28px, 3.2vw, 42px);
+  place-items: center;
+  background: rgba(255, 253, 246, 0.9);
+  border: 2px solid #273629;
+  border-radius: 999px;
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.38);
+  font-size: clamp(0.9rem, 1.9vw, 1.35rem);
+  pointer-events: none;
+  transform: translate(calc(-50% + var(--marker-x, 0px)), calc(-50% + var(--marker-y, 0px)));
+}
 
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(64, 64, 64, 0.55);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 5000;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(29, 36, 29, 0.62);
 }
 
 .modal.hidden {
   display: none;
 }
 
+.modal-open {
+  overflow: hidden;
+}
+
 .modal-content {
-  background: #ffffff;
-  padding: 20px;
-  width: 320px;
-  max-width: 90vw;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  animation: fadeIn 0.2s ease-out;
-  color: black;
+  width: min(420px, 100%);
+  max-height: min(680px, 90vh);
+  overflow: auto;
+  padding: 22px;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
 }
 
-.modal-content h3 {
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 20px;
-  font-weight: bold;
+.modal-content h2 {
+  font-size: 1.5rem;
 }
 
-.modal-content label {
+.modal-content label,
+.modal-content .field-label {
   display: block;
-  margin-top: 10px;
-  font-weight: 600;
+  margin-top: 14px;
+  margin-bottom: 6px;
 }
 
-.modal-content input[type="text"],
-.modal-content input[type="number"] {
-  width: 100%;
-  padding: 5px;
-  margin-top: 4px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 20px;
-  color: black;
+.modal-note {
+  margin: 10px 0;
+  color: var(--muted);
+  font-weight: 800;
 }
 
 .modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
   margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-buttons button {
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.modal-buttons button:first-child {
-  background: #4caf50;
-  color: white;
-}
-
-.modal-buttons button:last-child {
-  background: #ccc;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* ======================================================
-   BUTTONS + PANELS
-====================================================== */
-
-#add-player-button,
-#reset-challenge-button,
-#activity-submit {
-  padding: 4px 8px;
-  margin: 10px 5px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-#add-player-button {
-  background: #2196f3;
-  color: white;
-}
-
-#reset-challenge-button {
-  background: #ff9800;
-  color: white;
-}
-
-#activity-submit {
-  background: #7f0386ff;
-  color: white;
-  border: 1px solid white;
-}
-
-#totals-panel {
-  margin-top: 15px;
-  padding: 10px;
-  padding-top: 0;
-  padding-bottom: 0;
-  background: #fafafa;
-  border-radius: 8px;
-  max-width: 400px;
-  color: #333;
-}
-
-#totals-panel > div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  border-bottom: 1px solid #ddd;
-}
-
-#totals-panel div:last-child {
-  border-bottom: none;
-}
-
-.player-controls {
-  display: flex;
-  gap: 8px;
-}
-
-.player-controls button {
-  padding: 4px 8px;
-  font-size: 12px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-}
-
-.player-controls .edit-btn {
-  background: #4caf50;
-  color: white;
-}
-
-.player-controls .delete-btn {
-  background: #f44336;
-  color: white;
-}
-#totals-panel > div span {
-  margin-right: 12px;
-}
-#activity-type,
-#activity-miles,
-#participant-select,
-#activity-participant-select {
-  padding: 4px;
-  font-size: 20px;
-}
-/* ======================================================
-   UTILITY
-====================================================== */
-
-.hidden {
-  display: none !important;
-}
-.center {
-  text-align: center;
 }
 
 .emoji-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-  margin-top: 10px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
 }
 
-.emoji-grid div {
-  font-size: 32px;
-  padding: 8px;
-  text-align: center;
-  cursor: pointer;
+.emoji-grid button {
+  display: grid;
+  min-height: 48px;
+  place-items: center;
+  background: #273629;
+  border: 2px solid transparent;
   border-radius: 8px;
-  background: #222;
-  transition: 0.2s;
+  cursor: pointer;
+  font-size: 1.45rem;
 }
 
-.emoji-grid div:hover {
-  background: #444;
-  pointer-events: auto;
+.emoji-grid button:hover,
+.emoji-grid button.selected {
+  background: #3f543f;
+  border-color: #c59444;
 }
 
-.emoji-grid div.selected {
-  background: #666;
-  outline: 3px solid gold;
+.hidden {
+  display: none !important;
 }
 
-.emoji-marker {
-  font-size: clamp(12px, 1.8vw, 24px);
+@media (max-width: 980px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .control-stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 12px;
+  }
+
+  .app-header {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .header-actions {
+    justify-content: stretch;
+  }
+
+  .header-actions .button {
+    flex: 1 1 140px;
+  }
+
+  .control-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .map-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .leaderboard-row {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+
+  .player-controls {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+
+  .stage-marker {
+    min-width: 48px;
+    max-width: 84px;
+    padding: 3px 5px;
+  }
+}
+
+@media (max-width: 420px) {
+  .app-header h1 {
+    font-size: 2rem;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .emoji-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+  }
 }

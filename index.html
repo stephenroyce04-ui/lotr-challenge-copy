@@ -3,155 +3,219 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fantasy Theme Challenge</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
-      rel="stylesheet"
+    <meta
+      name="description"
+      content="A friendly fantasy route challenge tracker for logging miles with friends."
     />
+    <meta name="theme-color" content="#273629" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Fantasy Challenge" />
+    <title>Fantasy League Challenge</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <!-- <h1>Fantasy League Challenge</h1> -->
-    <div id="top-controls">
-      <h1>Fantasy League Challenge</h1>
-
-      <div class="middle-buttons">
-        <button id="add-player-button">Add Player</button>
-        <button id="reset-challenge-button">Reset Challenge</button>
-      </div>
-
-      <div class="spacer"></div>
-    </div>
-
-    <div id="container">
-      <div>
-        <!-- Activity Logging Panel -->
-        <div id="activity-panel">
-          <h3>Log Activity</h3>
-
-          <label>Participant:</label>
-          <select id="activity-participant-select"></select>
-
-          <label>Type:</label>
-          <select id="activity-type">
-            <option value="walking">Walking</option>
-            <option value="cycling">Cycling</option>
-            <option value="swimming">Swimming</option>
-          </select>
-
-          <label>Miles:</label>
-          <input type="number" id="activity-miles" min="0" step="0.1" />
-
-          <button id="activity-submit">Add Activity</button>
+    <div class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Friends route tracker</p>
+          <h1>Fantasy League Challenge</h1>
         </div>
 
-        <!-- Totals Panel -->
-        <div id="totals-panel"></div>
-      </div>
+        <div class="header-actions" aria-label="Challenge actions">
+          <button id="add-player-button" class="button button-primary" type="button">
+            Add Player
+          </button>
+          <button id="reset-challenge-button" class="button button-secondary" type="button">
+            Reset
+          </button>
+        </div>
+      </header>
 
-      <!-- Container Below -->
-      <div id="map-container">
-        <!-- Background Map -->
-        <img src="images/map.png" id="map-bg" alt="Fantasy Map" />
+      <main class="app-layout">
+        <section class="control-stack" aria-label="Challenge controls">
+          <form id="activity-form" class="panel" novalidate>
+            <div class="section-heading">
+              <p class="eyebrow">Log progress</p>
+              <h2>Activity</h2>
+            </div>
 
-        <!-- Inline SVG Route -->
-        <svg id="route-svg" viewBox="0 0 1200 800" fill="none">
-          <path
-            id="route-path"
-            d="M351 29C357.579 69.6928 267.583 57.5 243.5 81.5C232.142 92.8194 216.427 124.833 222.5 142C228.573 159.167 248.933 173.098 254.5 182C260.067 190.902 257.945 191.598 262.5 200.5C266.144 207.621 262.758 228.843 269 240.5C271.868 244.951 281.55 254.801 290.862 266.5C300.174 278.199 304.295 279.804 307.5 281.5C351 293 340.963 289.432 351 316C359.5 338.5 298.951 351.148 303 364.5C303 415.366 360 392.5 371 390C378 388.409 399.667 376 399.667 406.963C399.667 413.576 406.246 441.854 406.246 448L399.667 471.817C399.667 471.817 399.667 474.488 399.667 485.17C399.667 498.522 401.185 502.973 406.246 509.331C437.42 539.851 418 548.5 444.5 558L463 572L527 562.104L539.5 541.122C543.211 537.519 557.171 537.119 565.658 541.122C576 546 594.433 558.713 600 562.104L637 572L652 584H673L709 572L731 537.5L746.325 509.331L765.556 471.817L795.5 430C805 417.772 828.998 417.772 837.5 417.772C848.127 417.772 868.282 420.728 886.5 422C904.719 423.272 891.662 417.772 926.5 417.772C953 417.772 940.5 422 972.5 426.5C1000.26 430.404 1026.12 402.027 1030 398"
-            stroke="#fff"
-            stroke-width="5"
-            stroke-dasharray="6 6"
-          />
-        </svg>
+            <div id="activity-message" class="form-message" role="status"></div>
 
-        <!-- Progress Marker (JS will move this) -->
-        <div id="progress-marker"></div>
-      </div>
+            <label for="activity-participant-select">Participant</label>
+            <select id="activity-participant-select" name="participant"></select>
+
+            <label for="activity-type">Type</label>
+            <select id="activity-type" name="activityType">
+              <option value="walking">Walking</option>
+              <option value="cycling">Cycling</option>
+              <option value="swimming">Swimming</option>
+            </select>
+
+            <label for="activity-miles">Miles</label>
+            <input
+              type="number"
+              id="activity-miles"
+              name="miles"
+              min="0"
+              step="0.1"
+              inputmode="decimal"
+              placeholder="0.0"
+            />
+
+            <button id="activity-submit" class="button button-primary" type="submit">
+              Add Activity
+            </button>
+          </form>
+
+          <section class="panel leaderboard-panel" aria-labelledby="leaderboard-title">
+            <div class="section-heading">
+              <p class="eyebrow">Party progress</p>
+              <h2 id="leaderboard-title">Leaderboard</h2>
+            </div>
+            <div id="totals-panel" class="leaderboard-list"></div>
+          </section>
+        </section>
+
+        <section class="map-panel" aria-labelledby="map-title">
+          <div class="map-heading">
+            <div>
+              <p class="eyebrow">Route map</p>
+              <h2 id="map-title">Journey to the finish</h2>
+            </div>
+            <p id="route-summary" class="route-summary"></p>
+          </div>
+
+          <div id="map-container" class="map-container">
+            <img src="images/map.png" id="map-bg" alt="Fantasy route map" />
+            <svg
+              id="route-svg"
+              viewBox="0 0 1200 800"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path
+                id="route-path"
+                d="M351 29C357.579 69.6928 267.583 57.5 243.5 81.5C232.142 92.8194 216.427 124.833 222.5 142C228.573 159.167 248.933 173.098 254.5 182C260.067 190.902 257.945 191.598 262.5 200.5C266.144 207.621 262.758 228.843 269 240.5C271.868 244.951 281.55 254.801 290.862 266.5C300.174 278.199 304.295 279.804 307.5 281.5C351 293 340.963 289.432 351 316C359.5 338.5 298.951 351.148 303 364.5C303 415.366 360 392.5 371 390C378 388.409 399.667 376 399.667 406.963C399.667 413.576 406.246 441.854 406.246 448L399.667 471.817C399.667 471.817 399.667 474.488 399.667 485.17C399.667 498.522 401.185 502.973 406.246 509.331C437.42 539.851 418 548.5 444.5 558L463 572L527 562.104L539.5 541.122C543.211 537.519 557.171 537.119 565.658 541.122C576 546 594.433 558.713 600 562.104L637 572L652 584H673L709 572L731 537.5L746.325 509.331L765.556 471.817L795.5 430C805 417.772 828.998 417.772 837.5 417.772C848.127 417.772 868.282 420.728 886.5 422C904.719 423.272 891.662 417.772 926.5 417.772C953 417.772 940.5 422 972.5 426.5C1000.26 430.404 1026.12 402.027 1030 398"
+              />
+            </svg>
+          </div>
+        </section>
+      </main>
     </div>
 
-    <!-- Totals Panel -->
-    <div id="totals-panel"></div>
-
-    <!-- Add Player Modal -->
-    <div id="add-player-modal" class="modal hidden">
+    <div
+      id="add-player-modal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-player-title"
+    >
       <div class="modal-content">
-        <h3>Add New Player</h3>
-        <label>Name:</label>
-        <input type="text" id="new-player-name" />
+        <h2 id="add-player-title">Add New Player</h2>
+        <div id="add-player-message" class="form-message" role="status"></div>
 
-        <label>Choose emoji:</label>
-        <div id="emoji-picker" class="emoji-grid">
-          <div>🔵</div>
-          <div>🟡</div>
-          <div>🔴</div>
-          <div>🟢</div>
-          <div>🟣</div>
-          <div>🟠</div>
+        <label for="new-player-name">Name</label>
+        <input type="text" id="new-player-name" autocomplete="off" maxlength="32" />
 
-          <div>🐉</div>
-          <div>🧙‍♂️</div>
-          <div>🧝‍♀️</div>
-          <div>🐹</div>
-          <div>🐰</div>
-          <div>🐣</div>
-
-          <div>🐓</div>
-          <div>🍷</div>
-          <div>🔥</div>
-          <div>⭐</div>
-          <div>🚆</div>
-          <div>🌟</div>
+        <p class="field-label">Choose marker</p>
+        <div id="emoji-picker" class="emoji-grid" role="radiogroup" aria-label="Choose marker">
+          <button type="button" aria-label="Blue marker">Blue</button>
+          <button type="button" aria-label="Gold marker">Gold</button>
+          <button type="button" aria-label="Red marker">Red</button>
+          <button type="button" aria-label="Green marker">Green</button>
+          <button type="button" aria-label="Purple marker">Purple</button>
+          <button type="button" aria-label="Orange marker">Orange</button>
+          <button type="button" aria-label="Dragon">Dragon</button>
+          <button type="button" aria-label="Wizard">Wizard</button>
+          <button type="button" aria-label="Elf">Elf</button>
+          <button type="button" aria-label="Ring">Ring</button>
+          <button type="button" aria-label="Fire">Fire</button>
+          <button type="button" aria-label="Star">Star</button>
         </div>
 
         <div class="modal-buttons">
-          <button id="confirm-add-player">Add</button>
-          <button id="cancel-add-player">Cancel</button>
+          <button id="confirm-add-player" class="button button-primary" type="button">
+            Add
+          </button>
+          <button id="cancel-add-player" class="button button-quiet" type="button">
+            Cancel
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Edit Score Modal -->
-    <div id="edit-score-modal" class="modal hidden">
+    <div
+      id="edit-score-modal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="edit-score-title"
+    >
       <div class="modal-content">
-        <h3>Edit Score</h3>
-        <p id="edit-player-name"></p>
-        <label>New Miles:</label>
-        <input type="number" id="edit-player-miles" min="0" />
+        <h2 id="edit-score-title">Edit Score</h2>
+        <p id="edit-player-name" class="modal-note"></p>
+        <div id="edit-score-message" class="form-message" role="status"></div>
+        <label for="edit-player-miles">New Miles</label>
+        <input type="number" id="edit-player-miles" min="0" step="0.1" inputmode="decimal" />
         <div class="modal-buttons">
-          <button id="confirm-edit-score">Save</button>
-          <button id="cancel-edit-score">Cancel</button>
+          <button id="confirm-edit-score" class="button button-primary" type="button">
+            Save
+          </button>
+          <button id="cancel-edit-score" class="button button-quiet" type="button">
+            Cancel
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Delete Player Modal -->
-    <div id="delete-player-modal" class="modal hidden">
+    <div
+      id="delete-player-modal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="delete-player-title"
+    >
       <div class="modal-content">
-        <h3>Delete Player</h3>
-        <p id="delete-player-name"></p>
-        <p>Are you sure you want to remove this player?</p>
+        <h2 id="delete-player-title">Delete Player</h2>
+        <p id="delete-player-name" class="modal-note"></p>
+        <p>This removes the player from this device.</p>
         <div class="modal-buttons">
-          <button id="confirm-delete-player">Delete</button>
-          <button id="cancel-delete-player">Cancel</button>
+          <button id="confirm-delete-player" class="button button-danger" type="button">
+            Delete
+          </button>
+          <button id="cancel-delete-player" class="button button-quiet" type="button">
+            Cancel
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- Reset Challenge Modal -->
-    <div id="reset-challenge-modal" class="modal hidden">
+    <div
+      id="reset-challenge-modal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reset-challenge-title"
+    >
       <div class="modal-content">
-        <h3>Reset Challenge</h3>
-        <p>This will reset all players to 0 miles. Continue?</p>
+        <h2 id="reset-challenge-title">Reset Challenge</h2>
+        <p>This will reset every player to 0 miles on this device.</p>
         <div class="modal-buttons">
-          <button id="confirm-reset-challenge">Reset</button>
-          <button id="cancel-reset-challenge">Cancel</button>
+          <button id="confirm-reset-challenge" class="button button-danger" type="button">
+            Reset
+          </button>
+          <button id="cancel-reset-challenge" class="button button-quiet" type="button">
+            Cancel
+          </button>
         </div>
       </div>
     </div>
+
     <script src="app.js"></script>
   </body>
 </html>

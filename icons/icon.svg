@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Fantasy League Challenge icon</title>
+  <rect width="512" height="512" rx="112" fill="#273629"/>
+  <circle cx="256" cy="256" r="176" fill="#fff8e9"/>
+  <path d="M148 290c45-92 89-138 132-138 29 0 51 18 66 53l23-38 26 153H238l45-76c-10-25-22-38-37-38-25 0-56 36-93 109l-5-25Z" fill="#2f6548"/>
+  <path d="M107 356c60-26 115-39 166-39 47 0 91 11 132 34" fill="none" stroke="#c59444" stroke-width="30" stroke-linecap="round"/>
+  <circle cx="365" cy="143" r="27" fill="#c59444"/>
+</svg>
